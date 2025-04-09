@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import DogCard from "../components/DogCard";
+import "../styles/DogsGallery.css";
 
 export default function DogGallery() {
   const [dogs, setDogs] = useState([]);
@@ -17,7 +18,7 @@ export default function DogGallery() {
   if (loading) return <p>Carregando doguinhos... 🐾</p>;
 
   return (
-    <div>
+    <div className="container">
       <h1>Dog Gallery</h1>
       <div
         style={{
@@ -30,6 +31,27 @@ export default function DogGallery() {
           <DogCard key={index} image={dog} />
         ))}
       </div>
+      <DogCard image={dogs[0]} />
+      <button
+        onClick={() => {
+          setLoading(true);
+          fetch("https://dog.ceo/api/breeds/image/random/3")
+            .then((res) => res.json())
+            .then((data) => {
+              setDogs(data.message);
+              console.log(data);
+              setLoading(false);
+            });
+        }}
+        style={{
+          marginTop: "20px",
+          padding: "10px 20px",
+          fontSize: "16px",
+          cursor: "pointer",
+        }}
+      >
+        Carregar mais doguinhos
+      </button>
     </div>
   );
 }
